@@ -7,10 +7,7 @@ const { Product, Category, Tag, ProductTag } = require('./models');
 router.get('/' , async (req, res) => {
   try {
     const products = await Product.findAll({
-      include: [
-         { model: Category },
-         { model: Tag, through: ProductTag },
-      ],
+      include: [Category, { model: Tag, through: ProductTag }],
     });
 
     res.json(products);
@@ -23,10 +20,7 @@ router.get('/' , async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id, {
-      include: [
-        { model: Category },
-        { model: Tag, through: ProductTag },
-      ],
+      include: [ Category { model: Tag, through: ProductTag }],
     });
 
     if (!product) {
@@ -48,6 +42,22 @@ module.exports = router;
 
 // create new product
 router.post('/', (req, res) => {
+  try {
+    const { product_name, price, stock, tagIDs } = req.body;
+    const newProduct = await Product.create({ product_name, price, stock });
+
+    if (tagIDs && tagIDs.length) {
+      const productTagPromises = tagIDs.map((tag_id) => {
+        ProductTag.findOrCreate({
+          where: { product_id: newProduct.id, tag_id },
+        })
+      });
+      await Promise.all(productTagPromises);
+    } try {
+      console.error(err);
+      res.status(400).json({ Message: 'Bad request', error: err });
+    }
+  } catch 
   /* req.body should look like this...
     {
       product_name: "Basketball",
