@@ -32,8 +32,6 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error'});
   }
 });
-
-module.exports = router;
   // find all products
   // be sure to include its associated Category and Tag data
 
