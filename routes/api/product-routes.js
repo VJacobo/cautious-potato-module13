@@ -44,7 +44,7 @@ router.post('/', async (req,res) => {
     const { product_name, price, stock, tagIds } = req.body;
     const newProduct = await Product.creat({ product_name, price, stock });
 
-    if (tagIDs && tagIDs.length) {
+    if (tagIds && tagIds.length) {
       const productTagPromises = tagIDs.map((tag_id) => {
         return ProductTag.findOrCreate({
           where: { product_id: newProduct.id, tag_id },
